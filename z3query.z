@@ -1,0 +1,9 @@
+;; 45
+(declare-sort T826 0)
+(declare-fun v () Int)
+(declare-fun llen (T826) Int)
+(declare-fun z () T826)
+(assert (= (llen z) v))
+(assert (not (= (llen z) v)))
+
+ (check-sat)

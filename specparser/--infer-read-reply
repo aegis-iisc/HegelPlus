@@ -1,0 +1,2551 @@
+
+type token = 
+  | UNION
+  | UINST
+  | TYPE
+  | TRUE
+  | SUBSETEQ
+  | SUBSET
+  | STRCONST of (
+# 65 "specParser.mly"
+       (string)
+# 13 "--infer-read-reply"
+)
+  | STEXC
+  | STATE
+  | STAR
+  | SEMICOLON
+  | RPAREN
+  | RELATION
+  | REF
+  | RCURLY
+  | RBRACE
+  | QUAL
+  | PURE
+  | PRIMITIVE
+  | PLUS
+  | PIPE
+  | OF
+  | NUMEQ
+  | NOT
+  | MINUS
+  | LPAREN
+  | LESSTHAN
+  | LCURLY
+  | LBRACE
+  | LAMBDA
+  | INT of (
+# 64 "specParser.mly"
+       (int)
+# 41 "--infer-read-reply"
+)
+  | IMPL
+  | IFF
+  | ID of (
+# 63 "specParser.mly"
+        (string)
+# 48 "--infer-read-reply"
+)
+  | GREATERTHAN
+  | FORMULA
+  | FALSE
+  | EXISTS
+  | EXC
+  | EQUALOP
+  | EOL
+  | EOF
+  | DOT
+  | DISJ
+  | CROSSPRD
+  | CONJ
+  | COMMA
+  | COLONARROW
+  | COLON
+  | ASSUME
+  | ARROW
+  | ARMINUS
+  | ANGRIGHT
+  | ANGLEFT
+  | ALL
+
+# 1 "specParser.mly"
+  
+open SpecLang
+open RelLang
+open Printf
+module TypeSpec = SpecLang.RelSpec.TypeSpec
+module RefTy = SpecLang.RefinementType
+module Formula = SpecLang.RelSpec.Formula
+module Qualifier = SpecLang.Qualifier
+exception Error
+let defaultCons = SpecLang.Tycon.default
+let symbase = "sp_"
+let count = ref 0
+let genVar = fun _ -> 
+  let id = symbase ^ (string_of_int (!count)) in 
+  let () = count := !count + 1
+    in
+      Var.fromString id 
+let ($) (f,arg) = f arg
+let  empty = fun _ -> Vector.new0 ()
+let print msg = let () = Printf.printf "%s" msg in ()
+
+
+# 95 "--infer-read-reply"
+
+let menhir_begin_marker =
+  0
+
+and (xv_vartyseq, xv_vartybind, xv_vartyatom, xv_varty, xv_typespec, xv_typenameseq, xv_typedef, xv_tyd, xv_tybindseq, xv_tpatmatchseq, xv_tpatmatch, xv_start, xv_spec, xv_sortseq, xv_shape, xv_rpatom, xv_rexpr, xv_reldec, xv_reftyatom, xv_refty, xv_ratom, xv_qualdef, xv_primdef, xv_primdec, xv_predspec, xv_pred, xv_patom, xv_patmatchseq, xv_patmatch, xv_paramseq, xv_params, xv_mty, xv_instexprs, xv_instexpr, xv_idseq, xv_funparams, xv_funparam, xv_elemseq, xv_elem, xv_decsandtys, xv_conpat, xv_conargs, xv_bpatom, xv_basety) =
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 343 "specParser.mly"
+                          vts
+# 104 "--infer-read-reply"
+   : 'tv_vartyseq) (_startpos_vts_ : Lexing.position) (_endpos_vts_ : Lexing.position) (_startofs_vts_ : int) (_endofs_vts_ : int) (_loc_vts_ : Lexing.position * Lexing.position) (
+# 343 "specParser.mly"
+                   _2
+# 108 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 343 "specParser.mly"
+           vt
+# 112 "--infer-read-reply"
+   : 'tv_varty) (_startpos_vt_ : Lexing.position) (_endpos_vt_ : Lexing.position) (_startofs_vt_ : int) (_endofs_vt_ : int) (_loc_vt_ : Lexing.position * Lexing.position) ->
+    (
+# 343 "specParser.mly"
+                                       (vt :: vts)
+# 117 "--infer-read-reply"
+     : 'tv_vartyseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 342 "specParser.mly"
+           vt
+# 122 "--infer-read-reply"
+   : 'tv_varty) (_startpos_vt_ : Lexing.position) (_endpos_vt_ : Lexing.position) (_startofs_vt_ : int) (_endofs_vt_ : int) (_loc_vt_ : Lexing.position * Lexing.position) ->
+    (
+# 342 "specParser.mly"
+                    ([vt])
+# 127 "--infer-read-reply"
+     : 'tv_vartyseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 417 "specParser.mly"
+                                     _5
+# 132 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 417 "specParser.mly"
+                               ty
+# 136 "--infer-read-reply"
+   : 'tv_tyd) (_startpos_ty_ : Lexing.position) (_endpos_ty_ : Lexing.position) (_startofs_ty_ : int) (_endofs_ty_ : int) (_loc_ty_ : Lexing.position * Lexing.position) (
+# 417 "specParser.mly"
+                        _3
+# 140 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 417 "specParser.mly"
+                    v
+# 144 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 148 "--infer-read-reply"
+  )) (_startpos_v_ : Lexing.position) (_endpos_v_ : Lexing.position) (_startofs_v_ : int) (_endofs_v_ : int) (_loc_v_ : Lexing.position * Lexing.position) (
+# 417 "specParser.mly"
+           _1
+# 152 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 418 "specParser.mly"
+   ((v, ty))
+# 157 "--infer-read-reply"
+     : 'tv_vartybind) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 336 "specParser.mly"
+                                 _5
+# 162 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 336 "specParser.mly"
+                        fty
+# 166 "--infer-read-reply"
+   : 'tv_refty) (_startpos_fty_ : Lexing.position) (_endpos_fty_ : Lexing.position) (_startofs_fty_ : int) (_endofs_fty_ : int) (_loc_fty_ : Lexing.position * Lexing.position) (
+# 336 "specParser.mly"
+                 _3
+# 170 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 336 "specParser.mly"
+             i
+# 174 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 178 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 336 "specParser.mly"
+     _1
+# 182 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 337 "specParser.mly"
+  (         match fty with 
+                     RefTy.Arrow ((_,_),_) -> 
+                          ((Var.fromString i),fty)
+                       | _ -> raise (Failure "Impossible case of ArrowType")
+		)
+# 191 "--infer-read-reply"
+     : 'tv_vartyatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 331 "specParser.mly"
+                        _3
+# 196 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 331 "specParser.mly"
+            vas
+# 200 "--infer-read-reply"
+   : 'tv_vartyseq) (_startpos_vas_ : Lexing.position) (_endpos_vas_ : Lexing.position) (_startofs_vas_ : int) (_endofs_vas_ : int) (_loc_vas_ : Lexing.position * Lexing.position) (
+# 331 "specParser.mly"
+    _1
+# 204 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 331 "specParser.mly"
+                                 (
+                match vas with
+                        [x] -> x 
+                        | _ -> (genVar (), RefTy.Sigma vas)
+    )
+# 213 "--infer-read-reply"
+     : 'tv_vartyatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 325 "specParser.mly"
+                                       _5
+# 218 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 325 "specParser.mly"
+                              bt
+# 222 "--infer-read-reply"
+   : 'tv_basety) (_startpos_bt_ : Lexing.position) (_endpos_bt_ : Lexing.position) (_startofs_bt_ : int) (_endofs_bt_ : int) (_loc_bt_ : Lexing.position * Lexing.position) (
+# 325 "specParser.mly"
+                       _3
+# 226 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 325 "specParser.mly"
+                   i
+# 230 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 234 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 325 "specParser.mly"
+           _1
+# 238 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 326 "specParser.mly"
+  (
+                  match bt with 
+                     RefTy.Base (v,_,_) -> ((Var.fromString i),bt)
+                       | _ -> raise (Failure "Impossible case of basety")
+		)
+# 247 "--infer-read-reply"
+     : 'tv_vartyatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 345 "specParser.mly"
+                     rt
+# 252 "--infer-read-reply"
+   : 'tv_refty) (_startpos_rt_ : Lexing.position) (_endpos_rt_ : Lexing.position) (_startofs_rt_ : int) (_endofs_rt_ : int) (_loc_rt_ : Lexing.position * Lexing.position) (
+# 345 "specParser.mly"
+              _2
+# 256 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 345 "specParser.mly"
+        i
+# 260 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 264 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 346 "specParser.mly"
+  (((Var.fromString i), rt))
+# 269 "--infer-read-reply"
+     : 'tv_varty) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 312 "specParser.mly"
+                                                rt
+# 274 "--infer-read-reply"
+   : 'tv_refty) (_startpos_rt_ : Lexing.position) (_endpos_rt_ : Lexing.position) (_startofs_rt_ : int) (_endofs_rt_ : int) (_loc_rt_ : Lexing.position * Lexing.position) (
+# 312 "specParser.mly"
+                                         _5
+# 278 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 312 "specParser.mly"
+                                     i
+# 282 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 286 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 312 "specParser.mly"
+                             _3
+# 290 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 312 "specParser.mly"
+                  ps
+# 294 "--infer-read-reply"
+   : 'tv_paramseq) (_startpos_ps_ : Lexing.position) (_endpos_ps_ : Lexing.position) (_startofs_ps_ : int) (_endofs_ps_ : int) (_loc_ps_ : Lexing.position * Lexing.position) (
+# 312 "specParser.mly"
+          _1
+# 298 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 312 "specParser.mly"
+                                                         (
+                                  TypeSpec.T {isAssume = false;
+                                name = Var.fromString i;
+                                params = Vector.fromList ps; 
+                                refty = rt})
+# 307 "--infer-read-reply"
+     : 'tv_typespec) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 308 "specParser.mly"
+                      rt
+# 312 "--infer-read-reply"
+   : 'tv_refty) (_startpos_rt_ : Lexing.position) (_endpos_rt_ : Lexing.position) (_startofs_rt_ : int) (_endofs_rt_ : int) (_loc_rt_ : Lexing.position * Lexing.position) (
+# 308 "specParser.mly"
+               _2
+# 316 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 308 "specParser.mly"
+           i
+# 320 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 324 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 308 "specParser.mly"
+                               (      TypeSpec.T {isAssume = false;
+                                       name = (Var.fromString i);
+                                       params = empty ();
+                                       refty = rt})
+# 332 "--infer-read-reply"
+     : 'tv_typespec) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 303 "specParser.mly"
+                             rt
+# 337 "--infer-read-reply"
+   : 'tv_refty) (_startpos_rt_ : Lexing.position) (_endpos_rt_ : Lexing.position) (_startofs_rt_ : int) (_endofs_rt_ : int) (_loc_rt_ : Lexing.position * Lexing.position) (
+# 303 "specParser.mly"
+                      _3
+# 341 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 303 "specParser.mly"
+                  i
+# 345 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 349 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 303 "specParser.mly"
+          _1
+# 353 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 303 "specParser.mly"
+                                      (
+                                          TypeSpec.T {isAssume = true;
+                                              name = (Var.fromString i);
+                                              params = empty ();
+                                              refty = rt})
+# 362 "--infer-read-reply"
+     : 'tv_typespec) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 241 "specParser.mly"
+                typename
+# 367 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 371 "--infer-read-reply"
+  )) (_startpos_typename_ : Lexing.position) (_endpos_typename_ : Lexing.position) (_startofs_typename_ : int) (_endofs_typename_ : int) (_loc_typename_ : Lexing.position * Lexing.position) ->
+    (
+# 241 "specParser.mly"
+                            ([TyD.fromString (typename)])
+# 376 "--infer-read-reply"
+     : 'tv_typenameseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 240 "specParser.mly"
+                               tnseq
+# 381 "--infer-read-reply"
+   : 'tv_typenameseq) (_startpos_tnseq_ : Lexing.position) (_endpos_tnseq_ : Lexing.position) (_startofs_tnseq_ : int) (_endofs_tnseq_ : int) (_loc_tnseq_ : Lexing.position * Lexing.position) (
+# 240 "specParser.mly"
+                         _2
+# 385 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 240 "specParser.mly"
+              typename
+# 389 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 393 "--infer-read-reply"
+  )) (_startpos_typename_ : Lexing.position) (_endpos_typename_ : Lexing.position) (_startofs_typename_ : int) (_endofs_typename_ : int) (_loc_typename_ : Lexing.position * Lexing.position) ->
+    (
+# 240 "specParser.mly"
+                                                   (TyD.fromString (typename):: tnseq)
+# 398 "--infer-read-reply"
+     : 'tv_typenameseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 175 "specParser.mly"
+               tn
+# 403 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 407 "--infer-read-reply"
+  )) (_startpos_tn_ : Lexing.position) (_endpos_tn_ : Lexing.position) (_startofs_tn_ : int) (_endofs_tn_ : int) (_loc_tn_ : Lexing.position * Lexing.position) (
+# 175 "specParser.mly"
+         _1
+# 411 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 175 "specParser.mly"
+                      (
+            Algebraic.TD {
+                    typename = Var.fromString tn;   
+                    constructors = []    
+                    }
+        )
+# 421 "--infer-read-reply"
+     : 'tv_typedef) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 169 "specParser.mly"
+                               cons
+# 426 "--infer-read-reply"
+   : 'tv_tpatmatchseq) (_startpos_cons_ : Lexing.position) (_endpos_cons_ : Lexing.position) (_startofs_cons_ : int) (_endofs_cons_ : int) (_loc_cons_ : Lexing.position * Lexing.position) (
+# 169 "specParser.mly"
+                      _3
+# 430 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 169 "specParser.mly"
+               tn
+# 434 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 438 "--infer-read-reply"
+  )) (_startpos_tn_ : Lexing.position) (_endpos_tn_ : Lexing.position) (_startofs_tn_ : int) (_endofs_tn_ : int) (_loc_tn_ : Lexing.position * Lexing.position) (
+# 169 "specParser.mly"
+         _1
+# 442 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 170 "specParser.mly"
+                (Algebraic.TD {
+                    typename = Var.fromString tn;   
+                    constructors = cons    
+                    }
+                )
+# 451 "--infer-read-reply"
+     : 'tv_typedef) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 350 "specParser.mly"
+         t
+# 456 "--infer-read-reply"
+   : 'tv_tyd) (_startpos_t_ : Lexing.position) (_endpos_t_ : Lexing.position) (_startofs_t_ : int) (_endofs_t_ : int) (_loc_t_ : Lexing.position * Lexing.position) (
+# 350 "specParser.mly"
+    _1
+# 460 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 350 "specParser.mly"
+               (TyD.makeTRef t )
+# 465 "--infer-read-reply"
+     : 'tv_tyd) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 349 "specParser.mly"
+                 _3
+# 470 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 349 "specParser.mly"
+             t
+# 474 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 478 "--infer-read-reply"
+  )) (_startpos_t_ : Lexing.position) (_endpos_t_ : Lexing.position) (_startofs_t_ : int) (_endofs_t_ : int) (_loc_t_ : Lexing.position * Lexing.position) (
+# 349 "specParser.mly"
+     _1
+# 482 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 349 "specParser.mly"
+                         (TyD.makeTList (TyD.fromString t))
+# 487 "--infer-read-reply"
+     : 'tv_tyd) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 348 "specParser.mly"
+      t
+# 492 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 496 "--infer-read-reply"
+  )) (_startpos_t_ : Lexing.position) (_endpos_t_ : Lexing.position) (_startofs_t_ : int) (_endofs_t_ : int) (_loc_t_ : Lexing.position * Lexing.position) ->
+    (
+# 348 "specParser.mly"
+           (TyD.fromString t)
+# 501 "--infer-read-reply"
+     : 'tv_tyd) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 415 "specParser.mly"
+                              vts
+# 506 "--infer-read-reply"
+   : 'tv_tybindseq) (_startpos_vts_ : Lexing.position) (_endpos_vts_ : Lexing.position) (_startofs_vts_ : int) (_endofs_vts_ : int) (_loc_vts_ : Lexing.position * Lexing.position) (
+# 415 "specParser.mly"
+                       _2
+# 510 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 415 "specParser.mly"
+           vt
+# 514 "--infer-read-reply"
+   : 'tv_vartybind) (_startpos_vt_ : Lexing.position) (_endpos_vt_ : Lexing.position) (_startofs_vt_ : int) (_endofs_vt_ : int) (_loc_vt_ : Lexing.position * Lexing.position) ->
+    (
+# 415 "specParser.mly"
+                                            (vt :: vts)
+# 519 "--infer-read-reply"
+     : 'tv_tybindseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 414 "specParser.mly"
+            vty
+# 524 "--infer-read-reply"
+   : 'tv_vartybind) (_startpos_vty_ : Lexing.position) (_endpos_vty_ : Lexing.position) (_startofs_vty_ : int) (_endofs_vty_ : int) (_loc_vty_ : Lexing.position * Lexing.position) ->
+    (
+# 414 "specParser.mly"
+                          ([vty])
+# 529 "--infer-read-reply"
+     : 'tv_tybindseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 232 "specParser.mly"
+              tpm
+# 534 "--infer-read-reply"
+   : 'tv_tpatmatch) (_startpos_tpm_ : Lexing.position) (_endpos_tpm_ : Lexing.position) (_startofs_tpm_ : int) (_endofs_tpm_ : int) (_loc_tpm_ : Lexing.position * Lexing.position) ->
+    (
+# 232 "specParser.mly"
+                            ([tpm])
+# 539 "--infer-read-reply"
+     : 'tv_tpatmatchseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 231 "specParser.mly"
+                                  tpms
+# 544 "--infer-read-reply"
+   : 'tv_tpatmatchseq) (_startpos_tpms_ : Lexing.position) (_endpos_tpms_ : Lexing.position) (_startofs_tpms_ : int) (_endofs_tpms_ : int) (_loc_tpms_ : Lexing.position * Lexing.position) (
+# 231 "specParser.mly"
+                            _2
+# 548 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 231 "specParser.mly"
+               tpm
+# 552 "--infer-read-reply"
+   : 'tv_tpatmatch) (_startpos_tpm_ : Lexing.position) (_endpos_tpm_ : Lexing.position) (_startofs_tpm_ : int) (_endofs_tpm_ : int) (_loc_tpm_ : Lexing.position * Lexing.position) ->
+    (
+# 231 "specParser.mly"
+                                                    (tpm :: tpms)
+# 557 "--infer-read-reply"
+     : 'tv_tpatmatchseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 238 "specParser.mly"
+                   typeargs
+# 562 "--infer-read-reply"
+   : 'tv_typenameseq) (_startpos_typeargs_ : Lexing.position) (_endpos_typeargs_ : Lexing.position) (_startofs_typeargs_ : int) (_endofs_typeargs_ : int) (_loc_typeargs_ : Lexing.position * Lexing.position) (
+# 238 "specParser.mly"
+               _2
+# 566 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 238 "specParser.mly"
+           i
+# 570 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 574 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 238 "specParser.mly"
+                                        (Algebraic.Const {name=i;args=typeargs})
+# 579 "--infer-read-reply"
+     : 'tv_tpatmatch) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 236 "specParser.mly"
+            i
+# 584 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 588 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 237 "specParser.mly"
+              (Algebraic.Const {name=i;args=[]})
+# 593 "--infer-read-reply"
+     : 'tv_tpatmatch) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 85 "specParser.mly"
+   _1
+# 598 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    ((
+# 85 "specParser.mly"
+              (RelSpec.mk_empty_relspec ())
+# 603 "--infer-read-reply"
+     : 'tv_start) : (
+# 81 "specParser.mly"
+       (SpecLang.RelSpec.t)
+# 607 "--infer-read-reply"
+    )) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 84 "specParser.mly"
+          _2
+# 612 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 84 "specParser.mly"
+    s
+# 616 "--infer-read-reply"
+   : 'tv_spec) (_startpos_s_ : Lexing.position) (_endpos_s_ : Lexing.position) (_startofs_s_ : int) (_endofs_s_ : int) (_loc_s_ : Lexing.position * Lexing.position) ->
+    ((
+# 84 "specParser.mly"
+               (s)
+# 621 "--infer-read-reply"
+     : 'tv_start) : (
+# 81 "specParser.mly"
+       (SpecLang.RelSpec.t)
+# 625 "--infer-read-reply"
+    )) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 88 "specParser.mly"
+   d
+# 630 "--infer-read-reply"
+   : 'tv_decsandtys) (_startpos_d_ : Lexing.position) (_endpos_d_ : Lexing.position) (_startofs_d_ : int) (_endofs_d_ : int) (_loc_d_ : Lexing.position * Lexing.position) ->
+    (
+# 88 "specParser.mly"
+                   (
+                  d)
+# 636 "--infer-read-reply"
+     : 'tv_spec) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 218 "specParser.mly"
+                             ss
+# 641 "--infer-read-reply"
+   : 'tv_sortseq) (_startpos_ss_ : Lexing.position) (_endpos_ss_ : Lexing.position) (_startofs_ss_ : int) (_endofs_ss_ : int) (_loc_ss_ : Lexing.position * Lexing.position) (
+# 218 "specParser.mly"
+                 _2
+# 645 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 218 "specParser.mly"
+          s
+# 649 "--infer-read-reply"
+   : 'tv_tyd) (_startpos_s_ : Lexing.position) (_endpos_s_ : Lexing.position) (_startofs_s_ : int) (_endofs_s_ : int) (_loc_s_ : Lexing.position * Lexing.position) ->
+    (
+# 218 "specParser.mly"
+                                         (s :: ss)
+# 654 "--infer-read-reply"
+     : 'tv_sortseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 217 "specParser.mly"
+          s
+# 659 "--infer-read-reply"
+   : 'tv_tyd) (_startpos_s_ : Lexing.position) (_endpos_s_ : Lexing.position) (_startofs_s_ : int) (_endofs_s_ : int) (_loc_s_ : Lexing.position * Lexing.position) ->
+    (
+# 217 "specParser.mly"
+                  ([s])
+# 664 "--infer-read-reply"
+     : 'tv_sortseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 215 "specParser.mly"
+                          ss
+# 669 "--infer-read-reply"
+   : 'tv_sortseq) (_startpos_ss_ : Lexing.position) (_endpos_ss_ : Lexing.position) (_startofs_ss_ : int) (_endofs_ss_ : int) (_loc_ss_ : Lexing.position * Lexing.position) (
+# 215 "specParser.mly"
+              _2
+# 673 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 215 "specParser.mly"
+         s
+# 677 "--infer-read-reply"
+   : 'tv_tyd) (_startpos_s_ : Lexing.position) (_endpos_s_ : Lexing.position) (_startofs_s_ : int) (_endofs_s_ : int) (_loc_s_ : Lexing.position * Lexing.position) ->
+    (
+# 215 "specParser.mly"
+                                       (s :: ss)
+# 682 "--infer-read-reply"
+     : 'tv_shape) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 411 "specParser.mly"
+                               re2
+# 687 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re2_ : Lexing.position) (_endpos_re2_ : Lexing.position) (_startofs_re2_ : int) (_endofs_re2_ : int) (_loc_re2_ : Lexing.position * Lexing.position) (
+# 411 "specParser.mly"
+                  _2
+# 691 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 411 "specParser.mly"
+         re1
+# 695 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re1_ : Lexing.position) (_endpos_re1_ : Lexing.position) (_startofs_re1_ : int) (_endofs_re1_ : int) (_loc_re1_ : Lexing.position * Lexing.position) ->
+    (
+# 411 "specParser.mly"
+                                         (Predicate.RelPredicate.Grt(re1, re2))
+# 700 "--infer-read-reply"
+     : 'tv_rpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 410 "specParser.mly"
+                         re2
+# 705 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re2_ : Lexing.position) (_endpos_re2_ : Lexing.position) (_startofs_re2_ : int) (_endofs_re2_ : int) (_loc_re2_ : Lexing.position * Lexing.position) (
+# 410 "specParser.mly"
+                  _2
+# 709 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 410 "specParser.mly"
+         re1
+# 713 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re1_ : Lexing.position) (_endpos_re1_ : Lexing.position) (_startofs_re1_ : int) (_endofs_re1_ : int) (_loc_re1_ : Lexing.position * Lexing.position) ->
+    (
+# 410 "specParser.mly"
+                                   (Predicate.RelPredicate.NEq(re1, re2) )
+# 718 "--infer-read-reply"
+     : 'tv_rpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 409 "specParser.mly"
+                            re2
+# 723 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re2_ : Lexing.position) (_endpos_re2_ : Lexing.position) (_startofs_re2_ : int) (_endofs_re2_ : int) (_loc_re2_ : Lexing.position * Lexing.position) (
+# 409 "specParser.mly"
+                  _2
+# 727 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 409 "specParser.mly"
+         re1
+# 731 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re1_ : Lexing.position) (_endpos_re1_ : Lexing.position) (_startofs_re1_ : int) (_endofs_re1_ : int) (_loc_re1_ : Lexing.position * Lexing.position) ->
+    (
+# 409 "specParser.mly"
+                                      (Predicate.RelPredicate.SubEq(re1,re2))
+# 736 "--infer-read-reply"
+     : 'tv_rpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 408 "specParser.mly"
+                          re2
+# 741 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re2_ : Lexing.position) (_endpos_re2_ : Lexing.position) (_startofs_re2_ : int) (_endofs_re2_ : int) (_loc_re2_ : Lexing.position * Lexing.position) (
+# 408 "specParser.mly"
+                  _2
+# 745 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 408 "specParser.mly"
+         re1
+# 749 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re1_ : Lexing.position) (_endpos_re1_ : Lexing.position) (_startofs_re1_ : int) (_endofs_re1_ : int) (_loc_re1_ : Lexing.position * Lexing.position) ->
+    (
+# 408 "specParser.mly"
+                                    (Predicate.RelPredicate.Sub(re1,re2))
+# 754 "--infer-read-reply"
+     : 'tv_rpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 407 "specParser.mly"
+                           re2
+# 759 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re2_ : Lexing.position) (_endpos_re2_ : Lexing.position) (_startofs_re2_ : int) (_endofs_re2_ : int) (_loc_re2_ : Lexing.position * Lexing.position) (
+# 407 "specParser.mly"
+                  _2
+# 763 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 407 "specParser.mly"
+         re1
+# 767 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re1_ : Lexing.position) (_endpos_re1_ : Lexing.position) (_startofs_re1_ : int) (_endofs_re1_ : int) (_loc_re1_ : Lexing.position * Lexing.position) ->
+    (
+# 407 "specParser.mly"
+                                     (Predicate.RelPredicate.Eq(re1,re2))
+# 772 "--infer-read-reply"
+     : 'tv_rpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 406 "specParser.mly"
+                         _3
+# 777 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 406 "specParser.mly"
+                 re
+# 781 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re_ : Lexing.position) (_endpos_re_ : Lexing.position) (_startofs_re_ : int) (_endofs_re_ : int) (_loc_re_ : Lexing.position * Lexing.position) (
+# 406 "specParser.mly"
+        _1
+# 785 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 406 "specParser.mly"
+                                   (Predicate.RelPredicate.Q (re))
+# 790 "--infer-read-reply"
+     : 'tv_rpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 274 "specParser.mly"
+        ra
+# 795 "--infer-read-reply"
+   : 'tv_ratom) (_startpos_ra_ : Lexing.position) (_endpos_ra_ : Lexing.position) (_startofs_ra_ : int) (_endofs_ra_ : int) (_loc_ra_ : Lexing.position * Lexing.position) ->
+    (
+# 274 "specParser.mly"
+                 (ra)
+# 800 "--infer-read-reply"
+     : 'tv_rexpr) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 273 "specParser.mly"
+                         re
+# 805 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re_ : Lexing.position) (_endpos_re_ : Lexing.position) (_startofs_re_ : int) (_endofs_re_ : int) (_loc_re_ : Lexing.position * Lexing.position) (
+# 273 "specParser.mly"
+                _2
+# 809 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 273 "specParser.mly"
+        ra
+# 813 "--infer-read-reply"
+   : 'tv_ratom) (_startpos_ra_ : Lexing.position) (_endpos_ra_ : Lexing.position) (_startofs_ra_ : int) (_endofs_ra_ : int) (_loc_ra_ : Lexing.position * Lexing.position) ->
+    (
+# 273 "specParser.mly"
+                                  (SUBS(ra,re))
+# 818 "--infer-read-reply"
+     : 'tv_rexpr) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 272 "specParser.mly"
+                      re
+# 823 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re_ : Lexing.position) (_endpos_re_ : Lexing.position) (_startofs_re_ : int) (_endofs_re_ : int) (_loc_re_ : Lexing.position * Lexing.position) (
+# 272 "specParser.mly"
+                _2
+# 827 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 272 "specParser.mly"
+        ra
+# 831 "--infer-read-reply"
+   : 'tv_ratom) (_startpos_ra_ : Lexing.position) (_endpos_ra_ : Lexing.position) (_startofs_ra_ : int) (_endofs_ra_ : int) (_loc_ra_ : Lexing.position * Lexing.position) ->
+    (
+# 272 "specParser.mly"
+                               (ADD(ra,re))
+# 836 "--infer-read-reply"
+     : 'tv_rexpr) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 271 "specParser.mly"
+                       re
+# 841 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re_ : Lexing.position) (_endpos_re_ : Lexing.position) (_startofs_re_ : int) (_endofs_re_ : int) (_loc_re_ : Lexing.position * Lexing.position) (
+# 271 "specParser.mly"
+                _2
+# 845 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 271 "specParser.mly"
+        ra
+# 849 "--infer-read-reply"
+   : 'tv_ratom) (_startpos_ra_ : Lexing.position) (_endpos_ra_ : Lexing.position) (_startofs_ra_ : int) (_endofs_ra_ : int) (_loc_ra_ : Lexing.position * Lexing.position) ->
+    (
+# 271 "specParser.mly"
+                                (D(ra,re))
+# 854 "--infer-read-reply"
+     : 'tv_rexpr) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 270 "specParser.mly"
+                       re
+# 859 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re_ : Lexing.position) (_endpos_re_ : Lexing.position) (_startofs_re_ : int) (_endofs_re_ : int) (_loc_re_ : Lexing.position * Lexing.position) (
+# 270 "specParser.mly"
+                _2
+# 863 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 270 "specParser.mly"
+        ra
+# 867 "--infer-read-reply"
+   : 'tv_ratom) (_startpos_ra_ : Lexing.position) (_endpos_ra_ : Lexing.position) (_startofs_ra_ : int) (_endofs_ra_ : int) (_loc_ra_ : Lexing.position * Lexing.position) ->
+    (
+# 270 "specParser.mly"
+                                (U(ra,re))
+# 872 "--infer-read-reply"
+     : 'tv_rexpr) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 269 "specParser.mly"
+                          re
+# 877 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re_ : Lexing.position) (_endpos_re_ : Lexing.position) (_startofs_re_ : int) (_endofs_re_ : int) (_loc_re_ : Lexing.position * Lexing.position) (
+# 269 "specParser.mly"
+                _2
+# 881 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 269 "specParser.mly"
+        ra
+# 885 "--infer-read-reply"
+   : 'tv_ratom) (_startpos_ra_ : Lexing.position) (_endpos_ra_ : Lexing.position) (_startofs_ra_ : int) (_endofs_ra_ : int) (_loc_ra_ : Lexing.position * Lexing.position) ->
+    (
+# 269 "specParser.mly"
+                                   (X(ra,re))
+# 890 "--infer-read-reply"
+     : 'tv_rexpr) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 208 "specParser.mly"
+                                                                 _8
+# 895 "--infer-read-reply"
+   : unit) (_startpos__8_ : Lexing.position) (_endpos__8_ : Lexing.position) (_startofs__8_ : int) (_endofs__8_ : int) (_loc__8_ : Lexing.position * Lexing.position) (
+# 208 "specParser.mly"
+                                                      ie
+# 899 "--infer-read-reply"
+   : 'tv_instexpr) (_startpos_ie_ : Lexing.position) (_endpos_ie_ : Lexing.position) (_startofs_ie_ : int) (_endofs_ie_ : int) (_loc_ie_ : Lexing.position * Lexing.position) (
+# 208 "specParser.mly"
+                                             _6
+# 903 "--infer-read-reply"
+   : unit) (_startpos__6_ : Lexing.position) (_endpos__6_ : Lexing.position) (_startofs__6_ : int) (_endofs__6_ : int) (_loc__6_ : Lexing.position * Lexing.position) (
+# 208 "specParser.mly"
+                                      _5
+# 907 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 208 "specParser.mly"
+                              p
+# 911 "--infer-read-reply"
+   : 'tv_params) (_startpos_p_ : Lexing.position) (_endpos_p_ : Lexing.position) (_startofs_p_ : int) (_endofs_p_ : int) (_loc_p_ : Lexing.position * Lexing.position) (
+# 208 "specParser.mly"
+                         i
+# 915 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 919 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 208 "specParser.mly"
+                 _2
+# 923 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 208 "specParser.mly"
+        _1
+# 927 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 209 "specParser.mly"
+          (StructuralRelation.T{id=RelId.fromString i;
+                params = p;
+                mapp = [(defaultCons,None,
+                  Star ie)]})
+# 935 "--infer-read-reply"
+     : 'tv_reldec) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 203 "specParser.mly"
+                                          _5
+# 940 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 203 "specParser.mly"
+                               ie
+# 944 "--infer-read-reply"
+   : 'tv_instexpr) (_startpos_ie_ : Lexing.position) (_endpos_ie_ : Lexing.position) (_startofs_ie_ : int) (_endofs_ie_ : int) (_loc_ie_ : Lexing.position * Lexing.position) (
+# 203 "specParser.mly"
+                      _3
+# 948 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 203 "specParser.mly"
+                  i
+# 952 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 956 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 203 "specParser.mly"
+        _1
+# 960 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 204 "specParser.mly"
+          (StructuralRelation.T{id=RelId.fromString i;
+                params = empty ();
+                mapp = [(defaultCons,None,
+                  Star ie)]})
+# 968 "--infer-read-reply"
+     : 'tv_reldec) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 199 "specParser.mly"
+                                              patmseq
+# 973 "--infer-read-reply"
+   : 'tv_patmatchseq) (_startpos_patmseq_ : Lexing.position) (_endpos_patmseq_ : Lexing.position) (_startofs_patmseq_ : int) (_endofs_patmseq_ : int) (_loc_patmseq_ : Lexing.position * Lexing.position) (
+# 199 "specParser.mly"
+                                      _5
+# 977 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 199 "specParser.mly"
+                              p
+# 981 "--infer-read-reply"
+   : 'tv_params) (_startpos_p_ : Lexing.position) (_endpos_p_ : Lexing.position) (_startofs_p_ : int) (_endofs_p_ : int) (_loc_p_ : Lexing.position * Lexing.position) (
+# 199 "specParser.mly"
+                         i
+# 985 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 989 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 199 "specParser.mly"
+                 _2
+# 993 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 199 "specParser.mly"
+        _1
+# 997 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 200 "specParser.mly"
+          (StructuralRelation.T {id=RelId.fromString i;
+                params = p;
+                mapp = patmseq})
+# 1004 "--infer-read-reply"
+     : 'tv_reldec) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 195 "specParser.mly"
+                       patmseq
+# 1009 "--infer-read-reply"
+   : 'tv_patmatchseq) (_startpos_patmseq_ : Lexing.position) (_endpos_patmseq_ : Lexing.position) (_startofs_patmseq_ : int) (_endofs_patmseq_ : int) (_loc_patmseq_ : Lexing.position * Lexing.position) (
+# 195 "specParser.mly"
+                  i
+# 1013 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1017 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 195 "specParser.mly"
+        _1
+# 1021 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 196 "specParser.mly"
+          (StructuralRelation.T {id=RelId.fromString i;
+                params = empty ();
+                mapp = patmseq})
+# 1028 "--infer-read-reply"
+     : 'tv_reldec) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 323 "specParser.mly"
+                               _3
+# 1033 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 323 "specParser.mly"
+                   vas
+# 1037 "--infer-read-reply"
+   : 'tv_vartyseq) (_startpos_vas_ : Lexing.position) (_endpos_vas_ : Lexing.position) (_startofs_vas_ : int) (_endofs_vas_ : int) (_loc_vas_ : Lexing.position * Lexing.position) (
+# 323 "specParser.mly"
+           _1
+# 1041 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 323 "specParser.mly"
+                                        (RefTy.Sigma vas)
+# 1046 "--infer-read-reply"
+     : 'tv_reftyatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 322 "specParser.mly"
+            bt
+# 1051 "--infer-read-reply"
+   : 'tv_basety) (_startpos_bt_ : Lexing.position) (_endpos_bt_ : Lexing.position) (_startofs_bt_ : int) (_endofs_bt_ : int) (_loc_bt_ : Lexing.position * Lexing.position) ->
+    (
+# 322 "specParser.mly"
+                      ( bt)
+# 1056 "--infer-read-reply"
+     : 'tv_reftyatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 320 "specParser.mly"
+        mtype
+# 1061 "--infer-read-reply"
+   : 'tv_mty) (_startpos_mtype_ : Lexing.position) (_endpos_mtype_ : Lexing.position) (_startofs_mtype_ : int) (_endofs_mtype_ : int) (_loc_mtype_ : Lexing.position * Lexing.position) ->
+    (
+# 320 "specParser.mly"
+                  (mtype)
+# 1066 "--infer-read-reply"
+     : 'tv_refty) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 319 "specParser.mly"
+                             rt
+# 1071 "--infer-read-reply"
+   : 'tv_refty) (_startpos_rt_ : Lexing.position) (_endpos_rt_ : Lexing.position) (_startofs_rt_ : int) (_endofs_rt_ : int) (_loc_rt_ : Lexing.position * Lexing.position) (
+# 319 "specParser.mly"
+                      _2
+# 1075 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 319 "specParser.mly"
+        vrta
+# 1079 "--infer-read-reply"
+   : 'tv_vartyatom) (_startpos_vrta_ : Lexing.position) (_endpos_vrta_ : Lexing.position) (_startofs_vrta_ : int) (_endofs_vrta_ : int) (_loc_vrta_ : Lexing.position * Lexing.position) ->
+    (
+# 319 "specParser.mly"
+                                      ( RefTy.Arrow (((fst (vrta)) , (snd vrta)), rt))
+# 1084 "--infer-read-reply"
+     : 'tv_refty) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 318 "specParser.mly"
+        rta
+# 1089 "--infer-read-reply"
+   : 'tv_reftyatom) (_startpos_rta_ : Lexing.position) (_endpos_rta_ : Lexing.position) (_startofs_rta_ : int) (_endofs_rta_ : int) (_loc_rta_ : Lexing.position * Lexing.position) ->
+    (
+# 318 "specParser.mly"
+                      ( rta)
+# 1094 "--infer-read-reply"
+     : 'tv_refty) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 283 "specParser.mly"
+        el
+# 1099 "--infer-read-reply"
+   : 'tv_elem) (_startpos_el_ : Lexing.position) (_endpos_el_ : Lexing.position) (_startofs_el_ : int) (_endofs_el_ : int) (_loc_el_ : Lexing.position * Lexing.position) ->
+    (
+# 283 "specParser.mly"
+                (V (el))
+# 1104 "--infer-read-reply"
+     : 'tv_ratom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 282 "specParser.mly"
+                      _3
+# 1109 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 282 "specParser.mly"
+               el
+# 1113 "--infer-read-reply"
+   : 'tv_elem) (_startpos_el_ : Lexing.position) (_endpos_el_ : Lexing.position) (_startofs_el_ : int) (_endofs_el_ : int) (_loc_el_ : Lexing.position * Lexing.position) (
+# 282 "specParser.mly"
+       _1
+# 1117 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 282 "specParser.mly"
+                              (T[el])
+# 1122 "--infer-read-reply"
+     : 'tv_ratom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 281 "specParser.mly"
+                       _3
+# 1127 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 281 "specParser.mly"
+               re
+# 1131 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re_ : Lexing.position) (_endpos_re_ : Lexing.position) (_startofs_re_ : int) (_endofs_re_ : int) (_loc_re_ : Lexing.position * Lexing.position) (
+# 281 "specParser.mly"
+       _1
+# 1135 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 281 "specParser.mly"
+                               (re)
+# 1140 "--infer-read-reply"
+     : 'tv_ratom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 280 "specParser.mly"
+                               _4
+# 1145 "--infer-read-reply"
+   : unit) (_startpos__4_ : Lexing.position) (_endpos__4_ : Lexing.position) (_startofs__4_ : int) (_endofs__4_ : int) (_loc__4_ : Lexing.position * Lexing.position) (
+# 280 "specParser.mly"
+                           i
+# 1149 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1153 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 280 "specParser.mly"
+                   _2
+# 1157 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 280 "specParser.mly"
+        ie
+# 1161 "--infer-read-reply"
+   : 'tv_instexpr) (_startpos_ie_ : Lexing.position) (_endpos_ie_ : Lexing.position) (_startofs_ie_ : int) (_endofs_ie_ : int) (_loc_ie_ : Lexing.position * Lexing.position) ->
+    (
+# 280 "specParser.mly"
+                                       (R (ie, Var.fromString i))
+# 1166 "--infer-read-reply"
+     : 'tv_ratom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 279 "specParser.mly"
+                                       _4
+# 1171 "--infer-read-reply"
+   : unit) (_startpos__4_ : Lexing.position) (_endpos__4_ : Lexing.position) (_startofs__4_ : int) (_endofs__4_ : int) (_loc__4_ : Lexing.position * Lexing.position) (
+# 279 "specParser.mly"
+                           ps
+# 1175 "--infer-read-reply"
+   : 'tv_funparams) (_startpos_ps_ : Lexing.position) (_endpos_ps_ : Lexing.position) (_startofs_ps_ : int) (_endofs_ps_ : int) (_loc_ps_ : Lexing.position * Lexing.position) (
+# 279 "specParser.mly"
+                   _2
+# 1179 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 279 "specParser.mly"
+        ie
+# 1183 "--infer-read-reply"
+   : 'tv_instexpr) (_startpos_ie_ : Lexing.position) (_endpos_ie_ : Lexing.position) (_startofs_ie_ : int) (_endofs_ie_ : int) (_loc_ie_ : Lexing.position * Lexing.position) ->
+    (
+# 279 "specParser.mly"
+                                               (MultiR (ie, ps))
+# 1188 "--infer-read-reply"
+     : 'tv_ratom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 278 "specParser.mly"
+                                        _5
+# 1193 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 278 "specParser.mly"
+                                 _4
+# 1197 "--infer-read-reply"
+   : unit) (_startpos__4_ : Lexing.position) (_endpos__4_ : Lexing.position) (_startofs__4_ : int) (_endofs__4_ : int) (_loc__4_ : Lexing.position * Lexing.position) (
+# 278 "specParser.mly"
+                      els
+# 1201 "--infer-read-reply"
+   : 'tv_elemseq) (_startpos_els_ : Lexing.position) (_endpos_els_ : Lexing.position) (_startofs_els_ : int) (_endofs_els_ : int) (_loc_els_ : Lexing.position * Lexing.position) (
+# 278 "specParser.mly"
+              _2
+# 1205 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 278 "specParser.mly"
+       _1
+# 1209 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 278 "specParser.mly"
+                                                (T(Vector.fromList els))
+# 1214 "--infer-read-reply"
+     : 'tv_ratom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 277 "specParser.mly"
+                            _4
+# 1219 "--infer-read-reply"
+   : unit) (_startpos__4_ : Lexing.position) (_endpos__4_ : Lexing.position) (_startofs__4_ : int) (_endofs__4_ : int) (_loc__4_ : Lexing.position * Lexing.position) (
+# 277 "specParser.mly"
+                     _3
+# 1223 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 277 "specParser.mly"
+              _2
+# 1227 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 277 "specParser.mly"
+       _1
+# 1231 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 277 "specParser.mly"
+                                    (T(Vector.fromList []))
+# 1236 "--infer-read-reply"
+     : 'tv_ratom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 182 "specParser.mly"
+                          p
+# 1241 "--infer-read-reply"
+   : 'tv_shape) (_startpos_p_ : Lexing.position) (_endpos_p_ : Lexing.position) (_startofs_p_ : int) (_endofs_p_ : int) (_loc_p_ : Lexing.position * Lexing.position) (
+# 182 "specParser.mly"
+                   _3
+# 1245 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 182 "specParser.mly"
+               i
+# 1249 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1253 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 182 "specParser.mly"
+         _1
+# 1257 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 182 "specParser.mly"
+                                  (Qualifier.Qual {name=Var.fromString i; shape = p})
+# 1262 "--infer-read-reply"
+     : 'tv_qualdef) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 191 "specParser.mly"
+                          p
+# 1267 "--infer-read-reply"
+   : 'tv_primdef) (_startpos_p_ : Lexing.position) (_endpos_p_ : Lexing.position) (_startofs_p_ : int) (_endofs_p_ : int) (_loc_p_ : Lexing.position * Lexing.position) (
+# 191 "specParser.mly"
+                     _3
+# 1271 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 191 "specParser.mly"
+                 i
+# 1275 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1279 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 191 "specParser.mly"
+         _1
+# 1283 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 191 "specParser.mly"
+                                    (PrimitiveRelation.Nary
+                (Var.fromString i, p))
+# 1289 "--infer-read-reply"
+     : 'tv_primdef) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 190 "specParser.mly"
+          re
+# 1294 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re_ : Lexing.position) (_endpos_re_ : Lexing.position) (_startofs_re_ : int) (_endofs_re_ : int) (_loc_re_ : Lexing.position * Lexing.position) ->
+    (
+# 190 "specParser.mly"
+                   (PrimitiveRelation.Nullary re)
+# 1299 "--infer-read-reply"
+     : 'tv_primdef) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 186 "specParser.mly"
+                                          p
+# 1304 "--infer-read-reply"
+   : 'tv_primdef) (_startpos_p_ : Lexing.position) (_endpos_p_ : Lexing.position) (_startofs_p_ : int) (_endofs_p_ : int) (_loc_p_ : Lexing.position * Lexing.position) (
+# 186 "specParser.mly"
+                                 _4
+# 1308 "--infer-read-reply"
+   : unit) (_startpos__4_ : Lexing.position) (_endpos__4_ : Lexing.position) (_startofs__4_ : int) (_endofs__4_ : int) (_loc__4_ : Lexing.position * Lexing.position) (
+# 186 "specParser.mly"
+                             i
+# 1312 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1316 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 186 "specParser.mly"
+                   _2
+# 1320 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 186 "specParser.mly"
+         _1
+# 1324 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 186 "specParser.mly"
+                                                    (PrimitiveRelation.T
+                    {id=RelId.fromString i; 
+                    def=PrimitiveRelation.alphaRename p})
+# 1331 "--infer-read-reply"
+     : 'tv_primdec) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 184 "specParser.mly"
+                                p
+# 1336 "--infer-read-reply"
+   : 'tv_pred) (_startpos_p_ : Lexing.position) (_endpos_p_ : Lexing.position) (_startofs_p_ : int) (_endofs_p_ : int) (_loc_p_ : Lexing.position * Lexing.position) (
+# 184 "specParser.mly"
+                       _3
+# 1340 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 184 "specParser.mly"
+                   i
+# 1344 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1348 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) (
+# 184 "specParser.mly"
+          _1
+# 1352 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 184 "specParser.mly"
+                                       (Formula.Form{name=Var.fromString i;pred = p})
+# 1357 "--infer-read-reply"
+     : 'tv_predspec) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 379 "specParser.mly"
+                                   pr
+# 1362 "--infer-read-reply"
+   : 'tv_pred) (_startpos_pr_ : Lexing.position) (_endpos_pr_ : Lexing.position) (_startofs_pr_ : int) (_endofs_pr_ : int) (_loc_pr_ : Lexing.position * Lexing.position) (
+# 379 "specParser.mly"
+                              _3
+# 1366 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 379 "specParser.mly"
+               binds
+# 1370 "--infer-read-reply"
+   : 'tv_tybindseq) (_startpos_binds_ : Lexing.position) (_endpos_binds_ : Lexing.position) (_startofs_binds_ : int) (_endofs_binds_ : int) (_loc_binds_ : Lexing.position * Lexing.position) (
+# 379 "specParser.mly"
+      _1
+# 1374 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 379 "specParser.mly"
+                                           (Predicate.Exists (binds, pr))
+# 1379 "--infer-read-reply"
+     : 'tv_pred) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 378 "specParser.mly"
+                                   pr
+# 1384 "--infer-read-reply"
+   : 'tv_pred) (_startpos_pr_ : Lexing.position) (_endpos_pr_ : Lexing.position) (_startofs_pr_ : int) (_endofs_pr_ : int) (_loc_pr_ : Lexing.position * Lexing.position) (
+# 378 "specParser.mly"
+                              _3
+# 1388 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 378 "specParser.mly"
+               binds
+# 1392 "--infer-read-reply"
+   : 'tv_tybindseq) (_startpos_binds_ : Lexing.position) (_endpos_binds_ : Lexing.position) (_startofs_binds_ : int) (_endofs_binds_ : int) (_loc_binds_ : Lexing.position * Lexing.position) (
+# 378 "specParser.mly"
+      _1
+# 1396 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 378 "specParser.mly"
+                                           (Predicate.Forall (binds, pr) )
+# 1401 "--infer-read-reply"
+     : 'tv_pred) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 377 "specParser.mly"
+                      pr
+# 1406 "--infer-read-reply"
+   : 'tv_pred) (_startpos_pr_ : Lexing.position) (_endpos_pr_ : Lexing.position) (_startofs_pr_ : int) (_endofs_pr_ : int) (_loc_pr_ : Lexing.position * Lexing.position) (
+# 377 "specParser.mly"
+                _2
+# 1410 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 377 "specParser.mly"
+        pa
+# 1414 "--infer-read-reply"
+   : 'tv_patom) (_startpos_pa_ : Lexing.position) (_endpos_pa_ : Lexing.position) (_startofs_pa_ : int) (_endofs_pa_ : int) (_loc_pa_ : Lexing.position * Lexing.position) ->
+    (
+# 377 "specParser.mly"
+                              (Predicate.Disj (pa,pr))
+# 1419 "--infer-read-reply"
+     : 'tv_pred) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 376 "specParser.mly"
+                      pr
+# 1424 "--infer-read-reply"
+   : 'tv_pred) (_startpos_pr_ : Lexing.position) (_endpos_pr_ : Lexing.position) (_startofs_pr_ : int) (_endofs_pr_ : int) (_loc_pr_ : Lexing.position * Lexing.position) (
+# 376 "specParser.mly"
+                _2
+# 1428 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 376 "specParser.mly"
+        pa
+# 1432 "--infer-read-reply"
+   : 'tv_patom) (_startpos_pa_ : Lexing.position) (_endpos_pa_ : Lexing.position) (_startofs_pa_ : int) (_endofs_pa_ : int) (_loc_pa_ : Lexing.position * Lexing.position) ->
+    (
+# 376 "specParser.mly"
+                              (Predicate.Conj (pa,pr))
+# 1437 "--infer-read-reply"
+     : 'tv_pred) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 375 "specParser.mly"
+                     pr
+# 1442 "--infer-read-reply"
+   : 'tv_pred) (_startpos_pr_ : Lexing.position) (_endpos_pr_ : Lexing.position) (_startofs_pr_ : int) (_endofs_pr_ : int) (_loc_pr_ : Lexing.position * Lexing.position) (
+# 375 "specParser.mly"
+                _2
+# 1446 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 375 "specParser.mly"
+        pa
+# 1450 "--infer-read-reply"
+   : 'tv_patom) (_startpos_pa_ : Lexing.position) (_endpos_pa_ : Lexing.position) (_startofs_pa_ : int) (_endofs_pa_ : int) (_loc_pa_ : Lexing.position * Lexing.position) ->
+    (
+# 375 "specParser.mly"
+                             (Predicate.Iff (pa,pr))
+# 1455 "--infer-read-reply"
+     : 'tv_pred) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 374 "specParser.mly"
+                      pr
+# 1460 "--infer-read-reply"
+   : 'tv_pred) (_startpos_pr_ : Lexing.position) (_endpos_pr_ : Lexing.position) (_startofs_pr_ : int) (_endofs_pr_ : int) (_loc_pr_ : Lexing.position * Lexing.position) (
+# 374 "specParser.mly"
+                _2
+# 1464 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 374 "specParser.mly"
+        pa
+# 1468 "--infer-read-reply"
+   : 'tv_patom) (_startpos_pa_ : Lexing.position) (_endpos_pa_ : Lexing.position) (_startofs_pa_ : int) (_endofs_pa_ : int) (_loc_pa_ : Lexing.position * Lexing.position) ->
+    (
+# 374 "specParser.mly"
+                              (Predicate.If (pa,pr))
+# 1473 "--infer-read-reply"
+     : 'tv_pred) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 373 "specParser.mly"
+        pa
+# 1478 "--infer-read-reply"
+   : 'tv_patom) (_startpos_pa_ : Lexing.position) (_endpos_pa_ : Lexing.position) (_startofs_pa_ : int) (_endofs_pa_ : int) (_loc_pa_ : Lexing.position * Lexing.position) ->
+    (
+# 373 "specParser.mly"
+                 (pa)
+# 1483 "--infer-read-reply"
+     : 'tv_pred) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 385 "specParser.mly"
+        ra
+# 1488 "--infer-read-reply"
+   : 'tv_rpatom) (_startpos_ra_ : Lexing.position) (_endpos_ra_ : Lexing.position) (_startofs_ra_ : int) (_endofs_ra_ : int) (_loc_ra_ : Lexing.position * Lexing.position) ->
+    (
+# 385 "specParser.mly"
+                  (Predicate.Rel ra)
+# 1493 "--infer-read-reply"
+     : 'tv_patom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 384 "specParser.mly"
+        ba
+# 1498 "--infer-read-reply"
+   : 'tv_bpatom) (_startpos_ba_ : Lexing.position) (_endpos_ba_ : Lexing.position) (_startofs_ba_ : int) (_endofs_ba_ : int) (_loc_ba_ : Lexing.position * Lexing.position) ->
+    (
+# 384 "specParser.mly"
+                  (Predicate.Base ba)
+# 1503 "--infer-read-reply"
+     : 'tv_patom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 383 "specParser.mly"
+                      _3
+# 1508 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 383 "specParser.mly"
+               pr
+# 1512 "--infer-read-reply"
+   : 'tv_pred) (_startpos_pr_ : Lexing.position) (_endpos_pr_ : Lexing.position) (_startofs_pr_ : int) (_endofs_pr_ : int) (_loc_pr_ : Lexing.position * Lexing.position) (
+# 383 "specParser.mly"
+       _1
+# 1516 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 383 "specParser.mly"
+                              (pr)
+# 1521 "--infer-read-reply"
+     : 'tv_patom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 382 "specParser.mly"
+            pa
+# 1526 "--infer-read-reply"
+   : 'tv_patom) (_startpos_pa_ : Lexing.position) (_endpos_pa_ : Lexing.position) (_startofs_pa_ : int) (_endofs_pa_ : int) (_loc_pa_ : Lexing.position * Lexing.position) (
+# 382 "specParser.mly"
+       _1
+# 1530 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 382 "specParser.mly"
+                     (Predicate.Not pa)
+# 1535 "--infer-read-reply"
+     : 'tv_patom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 381 "specParser.mly"
+       _1
+# 1540 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 381 "specParser.mly"
+             (Predicate.truee())
+# 1545 "--infer-read-reply"
+     : 'tv_patom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 228 "specParser.mly"
+              pm
+# 1550 "--infer-read-reply"
+   : 'tv_patmatch) (_startpos_pm_ : Lexing.position) (_endpos_pm_ : Lexing.position) (_startofs_pm_ : int) (_endofs_pm_ : int) (_loc_pm_ : Lexing.position * Lexing.position) ->
+    (
+# 228 "specParser.mly"
+                          ([pm])
+# 1555 "--infer-read-reply"
+     : 'tv_patmatchseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 227 "specParser.mly"
+                               pms
+# 1560 "--infer-read-reply"
+   : 'tv_patmatchseq) (_startpos_pms_ : Lexing.position) (_endpos_pms_ : Lexing.position) (_startofs_pms_ : int) (_endofs_pms_ : int) (_loc_pms_ : Lexing.position * Lexing.position) (
+# 227 "specParser.mly"
+                         _2
+# 1564 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 227 "specParser.mly"
+              pm
+# 1568 "--infer-read-reply"
+   : 'tv_patmatch) (_startpos_pm_ : Lexing.position) (_endpos_pm_ : Lexing.position) (_startofs_pm_ : int) (_endofs_pm_ : int) (_loc_pm_ : Lexing.position * Lexing.position) ->
+    (
+# 227 "specParser.mly"
+                                               (pm :: pms)
+# 1573 "--infer-read-reply"
+     : 'tv_patmatchseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 245 "specParser.mly"
+                        re
+# 1578 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re_ : Lexing.position) (_endpos_re_ : Lexing.position) (_startofs_re_ : int) (_endofs_re_ : int) (_loc_re_ : Lexing.position * Lexing.position) (
+# 245 "specParser.mly"
+               _2
+# 1582 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 245 "specParser.mly"
+           i
+# 1586 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1590 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 245 "specParser.mly"
+                                 ((Tycon.fromString i, None, Expr re))
+# 1595 "--infer-read-reply"
+     : 'tv_patmatch) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 243 "specParser.mly"
+                                           re
+# 1600 "--infer-read-reply"
+   : 'tv_rexpr) (_startpos_re_ : Lexing.position) (_endpos_re_ : Lexing.position) (_startofs_re_ : int) (_endofs_re_ : int) (_loc_re_ : Lexing.position * Lexing.position) (
+# 243 "specParser.mly"
+                                  _4
+# 1604 "--infer-read-reply"
+   : unit) (_startpos__4_ : Lexing.position) (_endpos__4_ : Lexing.position) (_startofs__4_ : int) (_endofs__4_ : int) (_loc__4_ : Lexing.position * Lexing.position) (
+# 243 "specParser.mly"
+                           _3
+# 1608 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 243 "specParser.mly"
+                  cp
+# 1612 "--infer-read-reply"
+   : 'tv_conpat) (_startpos_cp_ : Lexing.position) (_endpos_cp_ : Lexing.position) (_startofs_cp_ : int) (_endofs_cp_ : int) (_loc_cp_ : Lexing.position * Lexing.position) (
+# 243 "specParser.mly"
+          _1
+# 1616 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 244 "specParser.mly"
+              (match cp with (c,vlop) -> (c, vlop, Expr re))
+# 1621 "--infer-read-reply"
+     : 'tv_patmatch) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 225 "specParser.mly"
+                    pseq
+# 1626 "--infer-read-reply"
+   : 'tv_paramseq) (_startpos_pseq_ : Lexing.position) (_endpos_pseq_ : Lexing.position) (_startofs_pseq_ : int) (_endofs_pseq_ : int) (_loc_pseq_ : Lexing.position * Lexing.position) (
+# 225 "specParser.mly"
+             _2
+# 1630 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 225 "specParser.mly"
+         i
+# 1634 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1638 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 225 "specParser.mly"
+                                  ((RelId.fromString i)::pseq)
+# 1643 "--infer-read-reply"
+     : 'tv_paramseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 224 "specParser.mly"
+           i
+# 1648 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1652 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 224 "specParser.mly"
+                    ([RelId.fromString i])
+# 1657 "--infer-read-reply"
+     : 'tv_paramseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 222 "specParser.mly"
+              p
+# 1662 "--infer-read-reply"
+   : 'tv_params) (_startpos_p_ : Lexing.position) (_endpos_p_ : Lexing.position) (_startofs_p_ : int) (_endofs_p_ : int) (_loc_p_ : Lexing.position * Lexing.position) (
+# 222 "specParser.mly"
+         i
+# 1666 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1670 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 222 "specParser.mly"
+                       ((RelId.fromString i)::p)
+# 1675 "--infer-read-reply"
+     : 'tv_params) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 221 "specParser.mly"
+         i
+# 1680 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1684 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 221 "specParser.mly"
+                ([RelId.fromString i])
+# 1689 "--infer-read-reply"
+     : 'tv_params) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 364 "specParser.mly"
+                                                                                _10
+# 1694 "--infer-read-reply"
+   : unit) (_startpos__10_ : Lexing.position) (_endpos__10_ : Lexing.position) (_startofs__10_ : int) (_endofs__10_ : int) (_loc__10_ : Lexing.position * Lexing.position) (
+# 364 "specParser.mly"
+                                                                       post
+# 1698 "--infer-read-reply"
+   : 'tv_pred) (_startpos_post_ : Lexing.position) (_endpos_post_ : Lexing.position) (_startofs_post_ : int) (_endofs_post_ : int) (_loc_post_ : Lexing.position * Lexing.position) (
+# 364 "specParser.mly"
+                                                               _8
+# 1702 "--infer-read-reply"
+   : unit) (_startpos__8_ : Lexing.position) (_endpos__8_ : Lexing.position) (_startofs__8_ : int) (_endofs__8_ : int) (_loc__8_ : Lexing.position * Lexing.position) (
+# 364 "specParser.mly"
+                                                    resty
+# 1706 "--infer-read-reply"
+   : 'tv_refty) (_startpos_resty_ : Lexing.position) (_endpos_resty_ : Lexing.position) (_startofs_resty_ : int) (_endofs_resty_ : int) (_loc_resty_ : Lexing.position * Lexing.position) (
+# 364 "specParser.mly"
+                                             _6
+# 1710 "--infer-read-reply"
+   : unit) (_startpos__6_ : Lexing.position) (_endpos__6_ : Lexing.position) (_startofs__6_ : int) (_endofs__6_ : int) (_loc__6_ : Lexing.position * Lexing.position) (
+# 364 "specParser.mly"
+                                   resvar
+# 1714 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1718 "--infer-read-reply"
+  )) (_startpos_resvar_ : Lexing.position) (_endpos_resvar_ : Lexing.position) (_startofs_resvar_ : int) (_endofs_resvar_ : int) (_loc_resvar_ : Lexing.position * Lexing.position) (
+# 364 "specParser.mly"
+                           _4
+# 1722 "--infer-read-reply"
+   : unit) (_startpos__4_ : Lexing.position) (_endpos__4_ : Lexing.position) (_startofs__4_ : int) (_endofs__4_ : int) (_loc__4_ : Lexing.position * Lexing.position) (
+# 364 "specParser.mly"
+                   pre
+# 1726 "--infer-read-reply"
+   : 'tv_pred) (_startpos_pre_ : Lexing.position) (_endpos_pre_ : Lexing.position) (_startofs_pre_ : int) (_endofs_pre_ : int) (_loc_pre_ : Lexing.position * Lexing.position) (
+# 364 "specParser.mly"
+           _2
+# 1730 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 364 "specParser.mly"
+      ef
+# 1734 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1738 "--infer-read-reply"
+  )) (_startpos_ef_ : Lexing.position) (_endpos_ef_ : Lexing.position) (_startofs_ef_ : int) (_endofs_ef_ : int) (_loc_ef_ : Lexing.position * Lexing.position) ->
+    (
+# 364 "specParser.mly"
+                                                                                         (RefTy.MArrow (Effect.fromString ef, pre, (resvar, resty), post))
+# 1743 "--infer-read-reply"
+     : 'tv_mty) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 266 "specParser.mly"
+                                      ies
+# 1748 "--infer-read-reply"
+   : 'tv_instexprs) (_startpos_ies_ : Lexing.position) (_endpos_ies_ : Lexing.position) (_startofs_ies_ : int) (_endofs_ies_ : int) (_loc_ies_ : Lexing.position * Lexing.position) (
+# 266 "specParser.mly"
+                              _3
+# 1752 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 266 "specParser.mly"
+                   ie
+# 1756 "--infer-read-reply"
+   : 'tv_instexpr) (_startpos_ie_ : Lexing.position) (_endpos_ie_ : Lexing.position) (_startofs_ie_ : int) (_endofs_ie_ : int) (_loc_ie_ : Lexing.position * Lexing.position) (
+# 266 "specParser.mly"
+           _1
+# 1760 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 266 "specParser.mly"
+                                                    (ie :: ies)
+# 1765 "--infer-read-reply"
+     : 'tv_instexprs) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 265 "specParser.mly"
+                              _3
+# 1770 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 265 "specParser.mly"
+                   ie
+# 1774 "--infer-read-reply"
+   : 'tv_instexpr) (_startpos_ie_ : Lexing.position) (_endpos_ie_ : Lexing.position) (_startofs_ie_ : int) (_endofs_ie_ : int) (_loc_ie_ : Lexing.position * Lexing.position) (
+# 265 "specParser.mly"
+           _1
+# 1778 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 265 "specParser.mly"
+                                      ([ie])
+# 1783 "--infer-read-reply"
+     : 'tv_instexprs) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 260 "specParser.mly"
+                ies
+# 1788 "--infer-read-reply"
+   : 'tv_instexprs) (_startpos_ies_ : Lexing.position) (_endpos_ies_ : Lexing.position) (_startofs_ies_ : int) (_endofs_ies_ : int) (_loc_ies_ : Lexing.position * Lexing.position) (
+# 260 "specParser.mly"
+           i
+# 1792 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1796 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 260 "specParser.mly"
+                              (RInst {
+                sargs = empty (); targs = empty();
+                args = Vector.fromList ies;
+                rel = RelId.fromString i})
+# 1804 "--infer-read-reply"
+     : 'tv_instexpr) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 257 "specParser.mly"
+           i
+# 1809 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1813 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 257 "specParser.mly"
+                (RInst { sargs = empty (); 
+                targs = empty(); args = empty (); 
+                rel = RelId.fromString i})
+# 1820 "--infer-read-reply"
+     : 'tv_instexpr) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 255 "specParser.mly"
+                   is
+# 1825 "--infer-read-reply"
+   : 'tv_idseq) (_startpos_is_ : Lexing.position) (_endpos_is_ : Lexing.position) (_startofs_is_ : int) (_endofs_is_ : int) (_loc_is_ : Lexing.position * Lexing.position) (
+# 255 "specParser.mly"
+            _2
+# 1829 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 255 "specParser.mly"
+        i
+# 1833 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1837 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 255 "specParser.mly"
+                            ((Var.fromString i)::is)
+# 1842 "--infer-read-reply"
+     : 'tv_idseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 254 "specParser.mly"
+        i
+# 1847 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1851 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 254 "specParser.mly"
+             ([Var.fromString i])
+# 1856 "--infer-read-reply"
+     : 'tv_idseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 289 "specParser.mly"
+                    ps
+# 1861 "--infer-read-reply"
+   : 'tv_funparams) (_startpos_ps_ : Lexing.position) (_endpos_ps_ : Lexing.position) (_startofs_ps_ : int) (_endofs_ps_ : int) (_loc_ps_ : Lexing.position * Lexing.position) (
+# 289 "specParser.mly"
+             _2
+# 1865 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 289 "specParser.mly"
+   p
+# 1869 "--infer-read-reply"
+   : 'tv_funparam) (_startpos_p_ : Lexing.position) (_endpos_p_ : Lexing.position) (_startofs_p_ : int) (_endofs_p_ : int) (_loc_p_ : Lexing.position * Lexing.position) ->
+    (
+# 289 "specParser.mly"
+                                 (p::ps)
+# 1874 "--infer-read-reply"
+     : 'tv_funparams) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 288 "specParser.mly"
+            p
+# 1879 "--infer-read-reply"
+   : 'tv_funparam) (_startpos_p_ : Lexing.position) (_endpos_p_ : Lexing.position) (_startofs_p_ : int) (_endofs_p_ : int) (_loc_p_ : Lexing.position * Lexing.position) ->
+    (
+# 288 "specParser.mly"
+                       ([p])
+# 1884 "--infer-read-reply"
+     : 'tv_funparams) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 291 "specParser.mly"
+           i
+# 1889 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1893 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 291 "specParser.mly"
+                (Var.fromString i)
+# 1898 "--infer-read-reply"
+     : 'tv_funparam) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 294 "specParser.mly"
+                        els
+# 1903 "--infer-read-reply"
+   : 'tv_elemseq) (_startpos_els_ : Lexing.position) (_endpos_els_ : Lexing.position) (_startofs_els_ : int) (_endofs_els_ : int) (_loc_els_ : Lexing.position * Lexing.position) (
+# 294 "specParser.mly"
+                 _2
+# 1907 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 294 "specParser.mly"
+          el
+# 1911 "--infer-read-reply"
+   : 'tv_elem) (_startpos_el_ : Lexing.position) (_endpos_el_ : Lexing.position) (_startofs_el_ : int) (_endofs_el_ : int) (_loc_el_ : Lexing.position * Lexing.position) ->
+    (
+# 294 "specParser.mly"
+                                    (el::els)
+# 1916 "--infer-read-reply"
+     : 'tv_elemseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 293 "specParser.mly"
+          el
+# 1921 "--infer-read-reply"
+   : 'tv_elem) (_startpos_el_ : Lexing.position) (_endpos_el_ : Lexing.position) (_startofs_el_ : int) (_endofs_el_ : int) (_loc_el_ : Lexing.position * Lexing.position) ->
+    (
+# 293 "specParser.mly"
+                  ([el])
+# 1926 "--infer-read-reply"
+     : 'tv_elemseq) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 299 "specParser.mly"
+       i
+# 1931 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 1935 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 299 "specParser.mly"
+            (Var(Var.fromString i))
+# 1940 "--infer-read-reply"
+     : 'tv_elem) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 298 "specParser.mly"
+       f
+# 1945 "--infer-read-reply"
+   : unit) (_startpos_f_ : Lexing.position) (_endpos_f_ : Lexing.position) (_startofs_f_ : int) (_endofs_f_ : int) (_loc_f_ : Lexing.position * Lexing.position) ->
+    (
+# 298 "specParser.mly"
+               (Bool(false))
+# 1950 "--infer-read-reply"
+     : 'tv_elem) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 297 "specParser.mly"
+       t
+# 1955 "--infer-read-reply"
+   : unit) (_startpos_t_ : Lexing.position) (_endpos_t_ : Lexing.position) (_startofs_t_ : int) (_endofs_t_ : int) (_loc_t_ : Lexing.position * Lexing.position) ->
+    (
+# 297 "specParser.mly"
+              (Bool(true))
+# 1960 "--infer-read-reply"
+     : 'tv_elem) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 296 "specParser.mly"
+       ii
+# 1965 "--infer-read-reply"
+   : (
+# 64 "specParser.mly"
+       (int)
+# 1969 "--infer-read-reply"
+  )) (_startpos_ii_ : Lexing.position) (_endpos_ii_ : Lexing.position) (_startofs_ii_ : int) (_endofs_ii_ : int) (_loc_ii_ : Lexing.position * Lexing.position) ->
+    (
+# 296 "specParser.mly"
+              (Int(ii))
+# 1974 "--infer-read-reply"
+     : 'tv_elem) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) ->
+    (
+# 160 "specParser.mly"
+          (RelSpec.T {
+                    typedefs=[];
+  			            preds = Vector.new0 ();
+  			            quals = [];
+                    reldecs = [];
+                    primdecs = Vector.new0 ();
+                    typespecs = []})
+# 1986 "--infer-read-reply"
+     : 'tv_decsandtys) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 148 "specParser.mly"
+                          d
+# 1991 "--infer-read-reply"
+   : 'tv_decsandtys) (_startpos_d_ : Lexing.position) (_endpos_d_ : Lexing.position) (_startofs_d_ : int) (_endofs_d_ : int) (_loc_d_ : Lexing.position * Lexing.position) (
+# 148 "specParser.mly"
+               _2
+# 1995 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 148 "specParser.mly"
+    q
+# 1999 "--infer-read-reply"
+   : 'tv_qualdef) (_startpos_q_ : Lexing.position) (_endpos_q_ : Lexing.position) (_startofs_q_ : int) (_endofs_q_ : int) (_loc_q_ : Lexing.position * Lexing.position) ->
+    (
+# 149 "specParser.mly"
+    (
+		 match d with 
+		    RelSpec.T {typedefs;preds;quals;reldecs; primdecs; typespecs} -> 
+                    RelSpec.T {typedefs=typedefs;
+                              preds= preds;
+                              quals = q :: quals;
+                              reldecs = reldecs; primdecs=primdecs;
+                      typespecs = typespecs}
+
+		)
+# 2013 "--infer-read-reply"
+     : 'tv_decsandtys) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 136 "specParser.mly"
+                           d
+# 2018 "--infer-read-reply"
+   : 'tv_decsandtys) (_startpos_d_ : Lexing.position) (_endpos_d_ : Lexing.position) (_startofs_d_ : int) (_endofs_d_ : int) (_loc_d_ : Lexing.position * Lexing.position) (
+# 136 "specParser.mly"
+                _2
+# 2022 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 136 "specParser.mly"
+    p
+# 2026 "--infer-read-reply"
+   : 'tv_predspec) (_startpos_p_ : Lexing.position) (_endpos_p_ : Lexing.position) (_startofs_p_ : int) (_endofs_p_ : int) (_loc_p_ : Lexing.position * Lexing.position) ->
+    (
+# 137 "specParser.mly"
+    (
+		 match d with 
+		  RelSpec.T {typedefs;preds;quals;reldecs; primdecs; typespecs} -> 
+                    RelSpec.T {typedefs=typedefs;
+                              preds= p :: preds;
+                              quals = quals;
+                              reldecs = reldecs; 
+                              primdecs=primdecs;
+                              typespecs = typespecs}
+
+		)
+# 2041 "--infer-read-reply"
+     : 'tv_decsandtys) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 128 "specParser.mly"
+                         d
+# 2046 "--infer-read-reply"
+   : 'tv_decsandtys) (_startpos_d_ : Lexing.position) (_endpos_d_ : Lexing.position) (_startofs_d_ : int) (_endofs_d_ : int) (_loc_d_ : Lexing.position * Lexing.position) (
+# 128 "specParser.mly"
+              _2
+# 2050 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 128 "specParser.mly"
+    t
+# 2054 "--infer-read-reply"
+   : 'tv_typespec) (_startpos_t_ : Lexing.position) (_endpos_t_ : Lexing.position) (_startofs_t_ : int) (_endofs_t_ : int) (_loc_t_ : Lexing.position * Lexing.position) ->
+    (
+# 130 "specParser.mly"
+                (
+                  match d with
+                   RelSpec.T {typedefs;preds;quals;reldecs; primdecs;typespecs} -> 
+                    RelSpec.T {typedefs=typedefs;preds= preds;quals;reldecs = reldecs; primdecs=primdecs;
+                      typespecs = t :: typespecs}
+                )
+# 2064 "--infer-read-reply"
+     : 'tv_decsandtys) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 117 "specParser.mly"
+                         d
+# 2069 "--infer-read-reply"
+   : 'tv_decsandtys) (_startpos_d_ : Lexing.position) (_endpos_d_ : Lexing.position) (_startofs_d_ : int) (_endofs_d_ : int) (_loc_d_ : Lexing.position * Lexing.position) (
+# 117 "specParser.mly"
+              _2
+# 2073 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 117 "specParser.mly"
+    p
+# 2077 "--infer-read-reply"
+   : 'tv_primdec) (_startpos_p_ : Lexing.position) (_endpos_p_ : Lexing.position) (_startofs_p_ : int) (_endofs_p_ : int) (_loc_p_ : Lexing.position * Lexing.position) ->
+    (
+# 118 "specParser.mly"
+                (match d with 
+                  RelSpec.T ({typedefs;preds;quals;reldecs; primdecs; typespecs}) -> 
+                    RelSpec.T {
+                              typedefs=typedefs;
+                              preds = preds;
+		    		                   quals = quals;
+                              primdecs = p :: primdecs; 
+                              reldecs=reldecs; 
+                              typespecs = typespecs}
+                )
+# 2091 "--infer-read-reply"
+     : 'tv_decsandtys) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 106 "specParser.mly"
+                        d
+# 2096 "--infer-read-reply"
+   : 'tv_decsandtys) (_startpos_d_ : Lexing.position) (_endpos_d_ : Lexing.position) (_startofs_d_ : int) (_endofs_d_ : int) (_loc_d_ : Lexing.position * Lexing.position) (
+# 106 "specParser.mly"
+             _2
+# 2100 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 106 "specParser.mly"
+     r
+# 2104 "--infer-read-reply"
+   : 'tv_reldec) (_startpos_r_ : Lexing.position) (_endpos_r_ : Lexing.position) (_startofs_r_ : int) (_endofs_r_ : int) (_loc_r_ : Lexing.position * Lexing.position) ->
+    (
+# 107 "specParser.mly"
+                  (
+                    match d with 
+                    RelSpec.T ({typedefs;preds;quals;reldecs; primdecs; typespecs}) -> 
+                    RelSpec.T {typedefs=typedefs;
+                              preds = preds;
+		    		                  quals = quals;
+                              reldecs = r ::reldecs; 
+                              primdecs = primdecs;
+                            typespecs = typespecs}
+                          )
+# 2118 "--infer-read-reply"
+     : 'tv_decsandtys) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 92 "specParser.mly"
+                            d
+# 2123 "--infer-read-reply"
+   : 'tv_decsandtys) (_startpos_d_ : Lexing.position) (_endpos_d_ : Lexing.position) (_startofs_d_ : int) (_endofs_d_ : int) (_loc_d_ : Lexing.position * Lexing.position) (
+# 92 "specParser.mly"
+                 _2
+# 2127 "--infer-read-reply"
+   : unit) (_startpos__2_ : Lexing.position) (_endpos__2_ : Lexing.position) (_startofs__2_ : int) (_endofs__2_ : int) (_loc__2_ : Lexing.position * Lexing.position) (
+# 92 "specParser.mly"
+     td
+# 2131 "--infer-read-reply"
+   : 'tv_typedef) (_startpos_td_ : Lexing.position) (_endpos_td_ : Lexing.position) (_startofs_td_ : int) (_endofs_td_ : int) (_loc_td_ : Lexing.position * Lexing.position) ->
+    (
+# 93 "specParser.mly"
+                  (
+                    match d with 
+                          RelSpec.T ({typedefs;preds;quals;reldecs; primdecs; typespecs}) ->    
+                              RelSpec.T {
+                              typedefs = td :: typedefs;
+                              preds = preds;
+                              quals = quals;
+                              reldecs = reldecs; 
+                              primdecs = primdecs;
+                              typespecs = typespecs}
+                  )
+# 2146 "--infer-read-reply"
+     : 'tv_decsandtys) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 249 "specParser.mly"
+               co
+# 2151 "--infer-read-reply"
+   : 'tv_conargs) (_startpos_co_ : Lexing.position) (_endpos_co_ : Lexing.position) (_startofs_co_ : int) (_endofs_co_ : int) (_loc_co_ : Lexing.position * Lexing.position) (
+# 249 "specParser.mly"
+          i
+# 2155 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2159 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 249 "specParser.mly"
+                          ((Tycon.fromString i, Some co))
+# 2164 "--infer-read-reply"
+     : 'tv_conpat) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 248 "specParser.mly"
+          i
+# 2169 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2173 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 248 "specParser.mly"
+               ((Tycon.fromString i, None))
+# 2178 "--infer-read-reply"
+     : 'tv_conpat) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 252 "specParser.mly"
+                         _3
+# 2183 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 252 "specParser.mly"
+                 is
+# 2187 "--infer-read-reply"
+   : 'tv_idseq) (_startpos_is_ : Lexing.position) (_endpos_is_ : Lexing.position) (_startofs_is_ : int) (_endofs_is_ : int) (_loc_is_ : Lexing.position * Lexing.position) (
+# 252 "specParser.mly"
+         _1
+# 2191 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 252 "specParser.mly"
+                                 (Vector.fromList is)
+# 2196 "--infer-read-reply"
+     : 'tv_conargs) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 251 "specParser.mly"
+          i
+# 2201 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2205 "--infer-read-reply"
+  )) (_startpos_i_ : Lexing.position) (_endpos_i_ : Lexing.position) (_startofs_i_ : int) (_endofs_i_ : int) (_loc_i_ : Lexing.position * Lexing.position) ->
+    (
+# 251 "specParser.mly"
+               (Vector.fromList [Var.fromString i])
+# 2210 "--infer-read-reply"
+     : 'tv_conargs) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 400 "specParser.mly"
+                                           _5
+# 2215 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 400 "specParser.mly"
+                               rhs
+# 2219 "--infer-read-reply"
+   : (
+# 65 "specParser.mly"
+       (string)
+# 2223 "--infer-read-reply"
+  )) (_startpos_rhs_ : Lexing.position) (_endpos_rhs_ : Lexing.position) (_startofs_rhs_ : int) (_endofs_rhs_ : int) (_loc_rhs_ : Lexing.position * Lexing.position) (
+# 400 "specParser.mly"
+                      _3
+# 2227 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 400 "specParser.mly"
+                 i1
+# 2231 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2235 "--infer-read-reply"
+  )) (_startpos_i1_ : Lexing.position) (_endpos_i1_ : Lexing.position) (_startofs_i1_ : int) (_endofs_i1_ : int) (_loc_i1_ : Lexing.position * Lexing.position) (
+# 400 "specParser.mly"
+        _1
+# 2239 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 400 "specParser.mly"
+                                                   (
+       				let rhstrimmed = String.sub (rhs) (1) ((String.length rhs) - 2) in 
+       				Predicate.BasePredicate.varStrEq 
+                      (Var.fromString i1, rhstrimmed))
+# 2247 "--infer-read-reply"
+     : 'tv_bpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 398 "specParser.mly"
+                                      _5
+# 2252 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 398 "specParser.mly"
+                               rhs
+# 2256 "--infer-read-reply"
+   : (
+# 64 "specParser.mly"
+       (int)
+# 2260 "--infer-read-reply"
+  )) (_startpos_rhs_ : Lexing.position) (_endpos_rhs_ : Lexing.position) (_startofs_rhs_ : int) (_endofs_rhs_ : int) (_loc_rhs_ : Lexing.position * Lexing.position) (
+# 398 "specParser.mly"
+                      _3
+# 2264 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 398 "specParser.mly"
+                 i1
+# 2268 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2272 "--infer-read-reply"
+  )) (_startpos_i1_ : Lexing.position) (_endpos_i1_ : Lexing.position) (_startofs_i1_ : int) (_endofs_i1_ : int) (_loc_i1_ : Lexing.position * Lexing.position) (
+# 398 "specParser.mly"
+        _1
+# 2276 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 398 "specParser.mly"
+                                              (Predicate.BasePredicate.varIntEq 
+                      (Var.fromString i1, rhs))
+# 2282 "--infer-read-reply"
+     : 'tv_bpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 396 "specParser.mly"
+                                          _5
+# 2287 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 396 "specParser.mly"
+                                   rhs
+# 2291 "--infer-read-reply"
+   : (
+# 64 "specParser.mly"
+       (int)
+# 2295 "--infer-read-reply"
+  )) (_startpos_rhs_ : Lexing.position) (_endpos_rhs_ : Lexing.position) (_startofs_rhs_ : int) (_endofs_rhs_ : int) (_loc_rhs_ : Lexing.position * Lexing.position) (
+# 396 "specParser.mly"
+                      _3
+# 2299 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 396 "specParser.mly"
+                 i1
+# 2303 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2307 "--infer-read-reply"
+  )) (_startpos_i1_ : Lexing.position) (_endpos_i1_ : Lexing.position) (_startofs_i1_ : int) (_endofs_i1_ : int) (_loc_i1_ : Lexing.position * Lexing.position) (
+# 396 "specParser.mly"
+        _1
+# 2311 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 396 "specParser.mly"
+                                                  (Predicate.BasePredicate.varIntGt 
+                      (Var.fromString i1, rhs))
+# 2317 "--infer-read-reply"
+     : 'tv_bpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 394 "specParser.mly"
+                                        _5
+# 2322 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 394 "specParser.mly"
+                                   i2
+# 2326 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2330 "--infer-read-reply"
+  )) (_startpos_i2_ : Lexing.position) (_endpos_i2_ : Lexing.position) (_startofs_i2_ : int) (_endofs_i2_ : int) (_loc_i2_ : Lexing.position * Lexing.position) (
+# 394 "specParser.mly"
+                      _3
+# 2334 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 394 "specParser.mly"
+                 i1
+# 2338 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2342 "--infer-read-reply"
+  )) (_startpos_i1_ : Lexing.position) (_endpos_i1_ : Lexing.position) (_startofs_i1_ : int) (_endofs_i1_ : int) (_loc_i1_ : Lexing.position * Lexing.position) (
+# 394 "specParser.mly"
+        _1
+# 2346 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 394 "specParser.mly"
+                                                (Predicate.BasePredicate.varGt 
+                      (Var.fromString i1, Var.fromString i2))
+# 2352 "--infer-read-reply"
+     : 'tv_bpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 392 "specParser.mly"
+                                   _5
+# 2357 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 392 "specParser.mly"
+                             _4
+# 2361 "--infer-read-reply"
+   : unit) (_startpos__4_ : Lexing.position) (_endpos__4_ : Lexing.position) (_startofs__4_ : int) (_endofs__4_ : int) (_loc__4_ : Lexing.position * Lexing.position) (
+# 392 "specParser.mly"
+                     _3
+# 2365 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 392 "specParser.mly"
+                i1
+# 2369 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2373 "--infer-read-reply"
+  )) (_startpos_i1_ : Lexing.position) (_endpos_i1_ : Lexing.position) (_startofs_i1_ : int) (_endofs_i1_ : int) (_loc_i1_ : Lexing.position * Lexing.position) (
+# 392 "specParser.mly"
+        _1
+# 2377 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 392 "specParser.mly"
+                                           (Predicate.BasePredicate.varBoolEq 
+                      (Var.fromString i1, false))
+# 2383 "--infer-read-reply"
+     : 'tv_bpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 390 "specParser.mly"
+                                  _5
+# 2388 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 390 "specParser.mly"
+                             _4
+# 2392 "--infer-read-reply"
+   : unit) (_startpos__4_ : Lexing.position) (_endpos__4_ : Lexing.position) (_startofs__4_ : int) (_endofs__4_ : int) (_loc__4_ : Lexing.position * Lexing.position) (
+# 390 "specParser.mly"
+                     _3
+# 2396 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 390 "specParser.mly"
+                i1
+# 2400 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2404 "--infer-read-reply"
+  )) (_startpos_i1_ : Lexing.position) (_endpos_i1_ : Lexing.position) (_startofs_i1_ : int) (_endofs_i1_ : int) (_loc_i1_ : Lexing.position * Lexing.position) (
+# 390 "specParser.mly"
+        _1
+# 2408 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 390 "specParser.mly"
+                                          (Predicate.BasePredicate.varBoolEq 
+                      (Var.fromString i1, true))
+# 2414 "--infer-read-reply"
+     : 'tv_bpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 388 "specParser.mly"
+                                   _5
+# 2419 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 388 "specParser.mly"
+                              i2
+# 2423 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2427 "--infer-read-reply"
+  )) (_startpos_i2_ : Lexing.position) (_endpos_i2_ : Lexing.position) (_startofs_i2_ : int) (_endofs_i2_ : int) (_loc_i2_ : Lexing.position * Lexing.position) (
+# 388 "specParser.mly"
+                     _3
+# 2431 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 388 "specParser.mly"
+                i1
+# 2435 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2439 "--infer-read-reply"
+  )) (_startpos_i1_ : Lexing.position) (_endpos_i1_ : Lexing.position) (_startofs_i1_ : int) (_endofs_i1_ : int) (_loc_i1_ : Lexing.position * Lexing.position) (
+# 388 "specParser.mly"
+        _1
+# 2443 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 388 "specParser.mly"
+                                           (Predicate.BasePredicate.varEq 
+                      (Var.fromString i1, Var.fromString i2))
+# 2449 "--infer-read-reply"
+     : 'tv_bpatom) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 361 "specParser.mly"
+                                               _7
+# 2454 "--infer-read-reply"
+   : unit) (_startpos__7_ : Lexing.position) (_endpos__7_ : Lexing.position) (_startofs__7_ : int) (_endofs__7_ : int) (_loc__7_ : Lexing.position * Lexing.position) (
+# 361 "specParser.mly"
+                                        pr
+# 2458 "--infer-read-reply"
+   : 'tv_pred) (_startpos_pr_ : Lexing.position) (_endpos_pr_ : Lexing.position) (_startofs_pr_ : int) (_endofs_pr_ : int) (_loc_pr_ : Lexing.position * Lexing.position) (
+# 361 "specParser.mly"
+                                  _5
+# 2462 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 361 "specParser.mly"
+                            ty
+# 2466 "--infer-read-reply"
+   : 'tv_tyd) (_startpos_ty_ : Lexing.position) (_endpos_ty_ : Lexing.position) (_startofs_ty_ : int) (_endofs_ty_ : int) (_loc_ty_ : Lexing.position * Lexing.position) (
+# 361 "specParser.mly"
+                     _3
+# 2470 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 361 "specParser.mly"
+                v
+# 2474 "--infer-read-reply"
+   : (
+# 63 "specParser.mly"
+        (string)
+# 2478 "--infer-read-reply"
+  )) (_startpos_v_ : Lexing.position) (_endpos_v_ : Lexing.position) (_startofs_v_ : int) (_endofs_v_ : int) (_loc_v_ : Lexing.position * Lexing.position) (
+# 361 "specParser.mly"
+        _1
+# 2482 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 361 "specParser.mly"
+                                                       (RefinementType.Base ((Var.fromString v), 
+                ty, pr))
+# 2488 "--infer-read-reply"
+     : 'tv_basety) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 359 "specParser.mly"
+                                   _5
+# 2493 "--infer-read-reply"
+   : unit) (_startpos__5_ : Lexing.position) (_endpos__5_ : Lexing.position) (_startofs__5_ : int) (_endofs__5_ : int) (_loc__5_ : Lexing.position * Lexing.position) (
+# 359 "specParser.mly"
+                            pr
+# 2497 "--infer-read-reply"
+   : 'tv_pred) (_startpos_pr_ : Lexing.position) (_endpos_pr_ : Lexing.position) (_startofs_pr_ : int) (_endofs_pr_ : int) (_loc_pr_ : Lexing.position * Lexing.position) (
+# 359 "specParser.mly"
+                      _3
+# 2501 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 359 "specParser.mly"
+                ty
+# 2505 "--infer-read-reply"
+   : 'tv_tyd) (_startpos_ty_ : Lexing.position) (_endpos_ty_ : Lexing.position) (_startofs_ty_ : int) (_endofs_ty_ : int) (_loc_ty_ : Lexing.position * Lexing.position) (
+# 359 "specParser.mly"
+        _1
+# 2509 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 359 "specParser.mly"
+                                           (RefinementType.Base ((Var.get_fresh_var "v"), 
+                ty, pr))
+# 2515 "--infer-read-reply"
+     : 'tv_basety) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 356 "specParser.mly"
+                      _3
+# 2520 "--infer-read-reply"
+   : unit) (_startpos__3_ : Lexing.position) (_endpos__3_ : Lexing.position) (_startofs__3_ : int) (_endofs__3_ : int) (_loc__3_ : Lexing.position * Lexing.position) (
+# 356 "specParser.mly"
+                ty
+# 2524 "--infer-read-reply"
+   : 'tv_tyd) (_startpos_ty_ : Lexing.position) (_endpos_ty_ : Lexing.position) (_startofs_ty_ : int) (_endofs_ty_ : int) (_loc_ty_ : Lexing.position * Lexing.position) (
+# 356 "specParser.mly"
+        _1
+# 2528 "--infer-read-reply"
+   : unit) (_startpos__1_ : Lexing.position) (_endpos__1_ : Lexing.position) (_startofs__1_ : int) (_endofs__1_ : int) (_loc__1_ : Lexing.position * Lexing.position) ->
+    (
+# 356 "specParser.mly"
+                              (RefinementType.Base ((Var.get_fresh_var "v"), 
+                ty, 
+                Predicate.truee()))
+# 2535 "--infer-read-reply"
+     : 'tv_basety) in
+  let _ = fun (_startpos : Lexing.position) (_endpos : Lexing.position) (_endpos__0_ : Lexing.position) (_symbolstartpos : Lexing.position) (_startofs : int) (_endofs : int) (_endofs__0_ : int) (_symbolstartofs : int) (_sloc : Lexing.position * Lexing.position) (_loc : Lexing.position * Lexing.position) (
+# 353 "specParser.mly"
+         ty
+# 2540 "--infer-read-reply"
+   : 'tv_tyd) (_startpos_ty_ : Lexing.position) (_endpos_ty_ : Lexing.position) (_startofs_ty_ : int) (_endofs_ty_ : int) (_loc_ty_ : Lexing.position * Lexing.position) ->
+    (
+# 353 "specParser.mly"
+                (RefinementType.Base ((Var.get_fresh_var "v"), 
+                ty,
+                Predicate.truee()))
+# 2547 "--infer-read-reply"
+     : 'tv_basety) in
+  ((let rec diverge() = diverge() in diverge()) : 'tv_vartyseq * 'tv_vartybind * 'tv_vartyatom * 'tv_varty * 'tv_typespec * 'tv_typenameseq * 'tv_typedef * 'tv_tyd * 'tv_tybindseq * 'tv_tpatmatchseq * 'tv_tpatmatch * 'tv_start * 'tv_spec * 'tv_sortseq * 'tv_shape * 'tv_rpatom * 'tv_rexpr * 'tv_reldec * 'tv_reftyatom * 'tv_refty * 'tv_ratom * 'tv_qualdef * 'tv_primdef * 'tv_primdec * 'tv_predspec * 'tv_pred * 'tv_patom * 'tv_patmatchseq * 'tv_patmatch * 'tv_paramseq * 'tv_params * 'tv_mty * 'tv_instexprs * 'tv_instexpr * 'tv_idseq * 'tv_funparams * 'tv_funparam * 'tv_elemseq * 'tv_elem * 'tv_decsandtys * 'tv_conpat * 'tv_conargs * 'tv_bpatom * 'tv_basety)
+
+and menhir_end_marker =
+  0
