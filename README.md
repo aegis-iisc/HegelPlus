@@ -1,4 +1,4 @@
-# HegelPlus
+# HegelPlus : An implementatiuon for the QTA project
 A qualified-tree automata based approach for component-based synthesis, accompanying as a supplemental material 
 for the main paper : Deductive Component-Based Synthesis Using Semantic Similarity Reduction
 
