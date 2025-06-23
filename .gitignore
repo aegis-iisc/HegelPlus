@@ -3,5 +3,6 @@
 *.swp
 *.out
 *.log
+todo.md
 
 **/_build/**

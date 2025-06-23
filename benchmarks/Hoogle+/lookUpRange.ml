@@ -55,7 +55,15 @@ stack exec -- hplus --disable-filter=False --json='{"query": "Eq a => [(a,a)] ->
 "inArgNames": ["x", "y"]}'
 
 (* lookUpRange for a given function *)
-goal = ??
+goal = (l : [(a,b)]) -> (k : b) ->  -> {v : a | \(u: int). mem (u, k, l) = false => not (v = k)}
+
+goal = (l : [(a,b)]) -> (k : b) ->  -> {v : a | \(u: a). snd (l) = s /\
+                                        mem (u, k, l) = false => not (v = k) /\ 
+                                        \(u1 : b). mem (u1, s) = true  /\  mem (u, k, l) = false => v = last (fst (l))}
+
+goal = (l : [(a,b)]) -> (k : b) ->  -> {v : a | \(u: a). snd (l) = s /\
+                                        mem (u, k, l) = false => not (v = k) /\ 
+                                        \(u1 : b). mem (u1, s) = true  /\  mem (u, k, l) = false => v = hd (fst (l))}
 
 
 

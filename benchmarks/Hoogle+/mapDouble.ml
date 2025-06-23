@@ -32,4 +32,29 @@ stack exec -- hplus --disable-filter=False --json='
 "inArgNames": ["f","g","x"]}'
 
 (* Refined Type *)
-goal:  ??
+goal: p, q : (f : (x : int) -> { v : int | p}) -> 
+            (g : (x : int) -> { v : int | q}) -> 
+            (l : [int]) -> 
+              {v : [int] | \(u : int). mem (u , v) = true => 
+                            \( w : int ). mem (w, l) = true => 
+                            \e (z : int).   p (z) = true /\ q (w) = true  
+              }
+
+    goal: p, q : (f : (x : int) -> { v : int | p}) -> 
+                (g : (x : int) -> { v : int | q}) -> 
+                (l : [int]) -> 
+                  {v : [int] | \(u : int). mem (u , v) = true => 
+                                \( w : int ). mem (w, l) = true => 
+                                \e (z : int).  q (z) = true /\ p (w) = true  
+                  }
+    
+
+
+    goal: p, q : (f : (x : int) -> { v : int | p}) -> 
+                    (g : (x : int) -> { v : int | q}) -> 
+                    (l : [int]) -> 
+                      {v : [int] | \(u : int). mem (u , v) = true => 
+                                    \( w : int ). mem (w, l) = true => 
+                                    \e (z : int).  q (z) = true /\ p (w) = true  
+                      }
+                          

@@ -55,5 +55,4 @@ goal : (z : [int]) ->
 
 
   (* Output *)
-
-  ??
+concat z (reverse z)

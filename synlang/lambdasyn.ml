@@ -17,6 +17,8 @@ type caseExp = {constuctor : var;
                 args : var list ;
                 exp : typedMonExp}
 (*terms generated will be in A-normal form*)
+
+(* There are the terms in the language *)
 and  monExp = 
         | Evar of var 
         | Elam of (typedMonExp list) * typedMonExp (*Named Lambda Elam x1 : t1, x2:t2 . body *)

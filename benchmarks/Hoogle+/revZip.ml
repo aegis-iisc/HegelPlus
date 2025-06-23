@@ -34,4 +34,4 @@ goal : (x : [a]) -> (y : [a]) ->
 (ord (w, z, u) = true => ord (z, w, y))};
 
 (* Output *)
-
+zip x (reverse y)

@@ -44,6 +44,7 @@ stack exec -- hplus --disable-filter=False --json='{"query": "Int -> Int -> [a] 
  "inArgNames": ["x", "y", "z"]}'
 (* 
 Possible outputs:  *)
+goal : (x:int) (y:int) (z : v : [int]) = 
 reverse (z!!y : (z!!x : (reverse z)))
 append ( z, 
 cons ((z!!x),  singleton (z!!y))
@@ -55,3 +56,4 @@ goal : (x:int) -> (y:int) -> z : {v : [int] | len (z) >= x /\ len (z) >= y} ->
                       len (v) == len (z) + 2 /\
                       nth (x, z) = pen (v) /\
                       nth (y, z) = last (v)};
+

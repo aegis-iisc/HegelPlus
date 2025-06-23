@@ -23,4 +23,18 @@ stack exec -- hplus --disable-filter=False --json='{"query": "(Int -> Int) -> [I
 
 
 (*Refinement Type *)
-goal : 
+  goal p : (f : (x : int) -> { v : int | p}) -> 
+                      (l : [int]) -> {v : [int] | \(u : int). mem (u , v) = true => 
+                            p (u-1) }
+
+  goal p : (f : (x : int) -> { v : int | p v}) -> 
+                              (l : [int]) -> {v : [int] | \(u : int). mem (u , v) = true => 
+                                    p (u+1) }
+
+ goal p : (f : (x : int) -> { v : int | p v}) -> 
+            (l : [int]) -> {v : [int] | \(u : int). mem (u , v) = true => 
+                                            p (u-1) /\ 
+                                          \(u1 : int), (u2 : int). order (u1, u2, l) = true => 
+                                          u1' = u1 - 1 /\ u2' = u2 - 1
+                                          order (u1', u2', v) = true}
+        

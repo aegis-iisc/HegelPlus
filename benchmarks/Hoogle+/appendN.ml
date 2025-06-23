@@ -30,11 +30,6 @@ stack exec -- hplus --disable-filter=False --json='{"query": "Int -> [a] -> [a]"
 
 <!-- Refinement type -->
 goal : (x : int) -> (xs : [a]) -> { v : [a] | \(u : a). mem (u, xs) = true => mem (u, v) = true /\ count (u, v) = size (v) = x};
-(* 
-appendsize : a :-> [a] :-> int
-appendsize [] = 0 
-appendsize (x :: xs) = 1
 
-appned : x : [a] -> y : [a] -> {v : [a] | \(u : a). mem (u, x) = true => mem (u, v) /\
- mem (u, y) => mem (u, v) /\ mem (u, x) = true /\ appendsize (v) = appendsize (x) + appendsize (y)   
-*)
+appned : n : int -> l : {v : [a] | len (y) >= n} -> 
+  {v : [a] | \(u : a). mem (u, l) = true => mem (u, v) /\ len (v) = len (v) + n}   

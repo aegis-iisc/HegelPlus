@@ -25,3 +25,30 @@ stack exec -- hplus --disable-filter=False --json='
 
 
 (* Refinement type *)
+
+
+goal p : (f : (x : int) -> { v : int | p (v) = true}) -> 
+      (n : int) -> 
+      (m : int) -> 
+      (fuel :  { v : int | v = n}) -> 
+      {v : int | fuel = 0 /\ p (v-m) = true}  
+
+
+goal p : (f : (x : int) -> { v : int | p (v) = true}) -> 
+        (n : int) -> 
+        (m : int) -> 
+        (fuel :  { v : int | v = n}) -> 
+        {v : int | fuel = -1 /\ p (v-m) = true}  
+  
+
+
+  goal p : (f : (x : int) -> { v : int | p (v) = true}) -> 
+          (n : int) -> 
+          (m : int) -> 
+          (fuel :  { v : int | v = n}) -> 
+          {v : int | fuel = -1 /\ p (v-m) = true}  
+            
+  
+        
+  
+
